@@ -23,7 +23,7 @@ const app = PetiteVue.createApp({
         return this._fname + this._lname + this._re_password + this._password + this._email
     },
     get lastNameError () {
-        if(!this._hasNameError(this.last_name)) {
+        if(this._validName(this.last_name)) {
             this._lname = 20
             return ""
         } else {
@@ -32,7 +32,7 @@ const app = PetiteVue.createApp({
         }
     },
     get firstNameError() {
-        if(!this._hasNameError(this.first_name)) {
+        if(!this._validName(this.first_name)) {
             this._fname = 20
             return ""
         } else {
@@ -41,7 +41,7 @@ const app = PetiteVue.createApp({
         }
     },
     get emailError() {
-        if(!this._valid_email()) {
+        if(!this._validEmail()) {
             this._email = 0
             return "Looks like your email address is not valid."
         }
@@ -69,11 +69,11 @@ const app = PetiteVue.createApp({
     },
 
     // validators
-    _hasNameError(name) {
+    _validName(name) {
         let _regex = /^([a-zA-Z ]{3,})$/
         return Boolean(name.match(_regex))
     },
-    _valid_email() {
+    _validEmail() {
         let res = Boolean(String(this.email)
             .toLowerCase()
             .match(
