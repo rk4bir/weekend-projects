@@ -14,7 +14,6 @@ const app = PetiteVue.createApp({
     password: "",
     confirm_password: "",
     // dynamic submit button items
-    submitContentDefault: "Register&nbsp;&nbsp;<span class='fa fa-arrow-right'></span>",
     submitContent: "Register&nbsp;&nbsp;<span class='fa fa-arrow-right'></span>",
     // form message
     formMessage: "",
