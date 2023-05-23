@@ -1,0 +1,32 @@
+2019-12-05 18:47:29,944 - pid[33617] - [INFO] - "GET http://testserver/products/ [200]" - 
+2019-12-05 18:47:29,953 - pid[33617] - [INFO] - "GET http://testserver/products/shari/ [200]" - 
+2019-12-05 18:47:29,958 - pid[33617] - [INFO] - "POST http://testserver/products/shari/size/ [201]" - New size was added to Shari.
+2019-12-05 18:47:29,958 - pid[33617] - [INFO] - "POST http://testserver/products/shari/size/ [201]" - 
+2019-12-05 18:47:29,962 - pid[33617] - [INFO] - "POST http://testserver/products/shari/color/ [201]" - New color was added to Shari.
+2019-12-05 18:47:29,963 - pid[33617] - [INFO] - "POST http://testserver/products/shari/color/ [201]" - 
+2019-12-05 18:47:29,967 - pid[33617] - [INFO] - "POST http://testserver/products/shari/price/ [201]" - New price was added to Shari.
+2019-12-05 18:47:29,968 - pid[33617] - [INFO] - "POST http://testserver/products/shari/price/ [201]" - 
+2019-12-05 18:47:29,976 - pid[33617] - [INFO] - "GET http://testserver/products/ [200]" - 
+2019-12-05 18:47:29,984 - pid[33617] - [INFO] - "GET http://testserver/products/shari/ [200]" - 
+2019-12-05 18:47:29,988 - pid[33617] - [INFO] - "POST http://testserver/products/shari/size/ [201]" - New size was added to Shari.
+2019-12-05 18:47:29,989 - pid[33617] - [INFO] - "POST http://testserver/products/shari/size/ [201]" - 
+2019-12-05 18:47:29,992 - pid[33617] - [INFO] - "POST http://testserver/products/shari/color/ [201]" - New color was added to Shari.
+2019-12-05 18:47:29,993 - pid[33617] - [INFO] - "POST http://testserver/products/shari/color/ [201]" - 
+2019-12-05 18:47:29,999 - pid[33617] - [INFO] - "POST http://testserver/products/shari/price/ [201]" - New price was added to Shari.
+2019-12-05 18:47:30,000 - pid[33617] - [INFO] - "POST http://testserver/products/shari/price/ [201]" - 
+2019-12-05 18:47:43,612 - pid[33672] - [INFO] - Watching for file changes with StatReloader
+2019-12-05 18:47:48,830 - pid[33672] - [INFO] - "GET http://127.0.0.1:8000/ [404]" - 
+2019-12-05 18:47:48,849 - pid[33672] - [WARNING] - Not Found: /
+2019-12-05 18:47:49,118 - pid[33672] - [INFO] - "GET http://127.0.0.1:8000/favicon.ico [404]" - 
+2019-12-05 18:47:49,119 - pid[33672] - [WARNING] - Not Found: /favicon.ico
+2019-12-05 18:47:56,913 - pid[33672] - [INFO] - "GET http://127.0.0.1:8000/products/ [200]" - 
+2019-12-05 18:47:59,617 - pid[33672] - [INFO] - "GET http://127.0.0.1:8000/products/shari/ [200]" - 
+2019-12-05 18:48:01,808 - pid[33672] - [INFO] - "GET http://127.0.0.1:8000/products/shari/size/ [405]" - 
+2019-12-05 18:48:01,809 - pid[33672] - [WARNING] - Method Not Allowed: /products/shari/size/
+2019-12-05 18:48:06,740 - pid[33672] - [INFO] - "GET http://127.0.0.1:8000/products/shari/color/ [405]" - 
+2019-12-05 18:48:06,741 - pid[33672] - [WARNING] - Method Not Allowed: /products/shari/color/
+2019-12-05 18:48:09,477 - pid[33672] - [INFO] - "GET http://127.0.0.1:8000/products/shari/price/ [405]" - 
+2019-12-05 18:48:09,477 - pid[33672] - [WARNING] - Method Not Allowed: /products/shari/price/
+2019-12-05 18:48:43,946 - pid[33672] - [INFO] - "POST http://127.0.0.1:8000/products/shari/price/ [201]" - New price was added to Shari.
+2019-12-05 18:48:43,981 - pid[33672] - [INFO] - "POST http://127.0.0.1:8000/products/shari/price/ [201]" - 
+2019-12-05 18:48:45,570 - pid[33672] - [INFO] - "GET http://127.0.0.1:8000/products/shari/ [200]" - 

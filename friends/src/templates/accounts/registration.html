@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Registration{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 160px!important"></div>
+{% endblock slider %}
+{% block post %}{% endblock post %}
+{% block content %}
+    <div class="container mb-5 mt-3 pb-5 min_height_400">
+        <form class="form-horizontal" role="form" method="POST" action="">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="text-center mb-3">
+                        <img src="{% static 'images/logo.png' %}" class="img-fluid" style="height: 80px;">
+                    </div>
+                    <div class="text-center">
+                        <a href="{% url 'accounts:create' %}">
+                            <h2 class="text-center active btn btn-md btn-danger">
+                                Registration
+                            </h2>
+                        </a>
+                        <a href="{% url 'accounts:login' %}">
+                            <h2 class="text-center  btn btn-md btn-dark">
+                                Login
+                            </h2>
+                        </a>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                {% if errors %}
+                    <div class="alert alert-danger col-md-6">
+                        <span class="font-weight-bold text-dark">The following error(s) occoured.</span>
+                        {{ errors|safe }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="name">Name</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
+                            <input type="text" name="name" class="form-control" id="name"
+                                   placeholder="John Doe" required autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-control-feedback">
+                            <span id="name_error" class="text-danger align-middle">
+                                <!-- Put name validation error messages here -->
+                            </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="email">E-Mail</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
+                            <input type="text" name="email" class="form-control" id="email"
+                                   placeholder="you@example.com" required autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-control-feedback">
+                        <span id="email_error" class="text-danger align-middle">
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="password">Password</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group has-danger">
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
+                            <input type="password" name="password" class="form-control" id="password"
+                                   placeholder="Password" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-control-feedback">
+                        <span id="password_error" class="text-danger align-middle">
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="password">Confirm Password</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem">
+                                <i class="fa fa-key"></i>
+                            </div>
+                            <input type="password" name="re-password" class="form-control"
+                                   id="re-password" placeholder="re-password" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-control-feedback">
+                        <span id="re_password_error" class="text-danger align-middle">
+
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <p class="text-secondary">
+                        NB: by clicking register button you're ensuring that you're aware of the terms and privacy of this site and you accept it willingly.
+                    </p>
+                </div>
+                    
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <button type="submit" id="submit" class="btn btn-sm btn-success"><i class="fa fa-user-plus"></i> Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block js_files %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#submit').attr('disabled', true);
+            function validateData(url, name){
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data:{
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+                        'data': $('#'+name).val(),
+                    },
+                    success: function(response){
+                        $('#'+name+"_error").html("<small class='text-danger font-weight-bold'>" + response + "</small>");
+                    }
+                });
+            }
+            // NAME VALIDATION
+            $('#name').keyup(function(e){
+                e.preventDefault();
+                validateData('/valildatename/', 'name');
+            });
+
+            // E-MAIL VALIDATION
+            $('#email').keyup(function(e){
+                e.preventDefault();
+                validateData('/valildateemail/', 'email');
+            });
+
+            // PASSWORD VALIDATION
+            $('#password').keyup(function(e){
+                e.preventDefault();
+                validateData('/valildatepassword/', 'password');
+            });
+
+            // RE-PASSWORD VALIDATION
+            $("#re-password").keyup(function(){
+                if( $('#password').val() == $("#re-password").val() ){
+                    $('#re_password_error').html("<small class='font-weight-bold text-success'>Matched</small>");
+                    $('#submit').attr('disabled', false);
+                }else{
+                    $('#re_password_error').html("<small class='text-danger font-weight-bold'>Didn't match</small>");
+                    $('#submit').attr('disabled', true);
+                }
+            });
+        });
+    </script>
+{% endblock js_files %}

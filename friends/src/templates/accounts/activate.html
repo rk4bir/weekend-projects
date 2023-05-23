@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Account activation{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 150px!important"></div>
+{% endblock slider %}
+{% block post %}{% endblock post %}
+{% block content %}
+    <div class="container mb-5 mt-3 pb-5 min_height_400">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="text-center mb-3">
+                    <img src="{% static 'images/logo.png' %}" class="img-fluid" style="height: 80px;">
+                </div>
+                <div class="text-center">
+                    <h2 class="text-center active btn btn-md btn-danger">Activation</h2>
+                </div>
+                <hr>
+            </div>
+        </div>
+        {% if message != "" %}
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="alert-link text-center col-md-6 alert alert-warning text-left">
+                    {{ message }}
+                </div>
+            </div>
+        {% endif %}
+        {% if form == 'email' %}
+            <form class="form-horizontal" role="form" method="get" action="">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-3 field-label-responsive">
+                        <label class="font-weight-bold">E-mail</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                <input type="text" placeholder="Enter your account email" name="email" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-sm btn-success"><span class="fa fa-paper-plane "></span> Proceed</button>
+                    </div>
+                </div>
+            </form>
+        {% else %}
+             {% if message == "" %}
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 alert alert-warning text-left">
+                        Check the inbox/spam folder of <span class="alert-link">{{ email }}</span> for the activation code.
+                    </div>
+                </div>
+             {% endif %}
+            <form class="form-horizontal" role="form" method="post" action="">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-3 field-label-responsive">
+                        <label class="font-weight-bold">Code</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                <input type="text" placeholder="Six digit code" name="a_code" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-sm btn-success"><span class="fa fa-check-circle "></span> Activate</button>
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+{% block js_files %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+        });
+    </script>
+{% endblock js_files %}

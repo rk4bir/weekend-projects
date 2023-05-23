@@ -1,0 +1,230 @@
+
+
+.search_res_hover:hover{
+  background-color: black;
+  color: white;
+}
+
+
+
+
+
+
+
+
+.profile_photo{
+    height: 130px; width: 130px
+}
+.testimonial_photo{
+    width: 100px!important;
+    height: 100px!important;
+}
+.display_inline li{
+    display: inline;
+    list-style: none;
+}
+
+
+.side_post_photo{
+  height: 50px; width: 50px;
+}
+
+
+@media(min-width: 768px) {
+  .field-label-responsive {
+    padding-top: .5rem;
+    text-align: right;
+  }
+}
+
+
+.min_height_400{min-height: 400px!important}
+.min_height_500{min-height: 500px!important}
+.bg-darkblue{background: darkblue!important}
+
+.post_img{height: 240px; width: 100%!important; border-radius: 5px; margin-bottom: 5px}
+.ajaxLoader{
+  display: none;
+  position: fixed;
+  top: 160px;
+  left: 0px;
+  opacity: 0.5;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 1000;
+  transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+}
+.ajaxLoader img{
+  height: 80px;
+  width: 80px;
+}
+
+
+.post_photo_preview{
+    height: 90px; width: 90px; border-radius: 90px;
+    background-size: cover;
+}
+
+.post_photo_preview ._add{
+  margin-left: 5px; margin-top: 30px;
+}
+
+
+.account_photo_preview{
+    height: 200px; width:200px; border-radius: 200px;
+    background-size: cover;
+}
+.account_photo_preview ._add{
+  margin-left: 5px; margin-top: 30px;
+}
+
+.display_inline li{
+  display: inline;
+  list-style: none;
+}
+
+
+/*    426px ~ 767px    */
+@media screen
+  and (min-device-width: 426px)
+  and (max-device-height: 767px){
+    .post_img{height: 200px;}
+}
+
+
+/*    320px ~ 425px   */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 425px){
+    .post_img{height: 180px;}
+}
+
+
+@media only screen
+  and (min-device-width: 280px)
+  and (max-device-width: 340px){
+    .post_img{height: 160px;}
+  }
+
+
+
+
+
+
+
+
+.blog_nav ul
+{
+  display: inline-block;
+}
+.blog_nav ul li
+{
+  display: inline-block;
+  margin-right: -4px;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  transition: all 200ms ease;
+}
+.blog_nav ul li.active
+{
+  background: #ff4200;
+}
+.blog_nav ul li a
+{
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #1c1c1c;
+  line-height: 43px;
+  padding-left: 9px;
+  padding-right: 3px;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  transition: all 200ms ease;
+}
+.blog_nav ul li.active a,
+.blog_nav ul li:hover a
+{
+  color: #FFFFFF;
+}
+.blog_nav ul li:hover
+{
+  background: #ff4200;
+}
+
+
+
+
+
+
+
+
+#blog_search
+{
+  width: 100%;
+  height: 40px;
+  font-size: 14px;
+  border: solid 1px #b7b7b7;
+  padding-left: 12px;
+}
+#blog_search:focus
+{
+  border: solid 2px #ff4200 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+#blog_search::-webkit-input-placeholder
+{
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: #6e6e6e !important;
+}
+#blog_search:-moz-placeholder /* older Firefox*/
+{
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: #6e6e6e !important;
+}
+#blog_search::-moz-placeholder /* Firefox 19+ */ 
+{
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: #6e6e6e !important;
+} 
+#blog_search:-ms-input-placeholder
+{ 
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: #6e6e6e !important;
+}
+#blog_search::input-placeholder
+{
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: #6e6e6e !important;
+}
+#search_submit
+{
+  position: absolute;
+  top: 0;
+  right: 5px;
+  border: none;
+  background: transparent;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+}

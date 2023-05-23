@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Notifications{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 160px!important"></div>
+{% endblock slider %}
+{% block post %}{% endblock post %}
+{% block content %}
+    <div class="container mb-5 mt-3 pb-5 min_height_400">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="text-center">
+                    <a href="{% url 'accounts:login' %}">
+                        <h2 class="text-center font-weight-bold active btn btn-md btn-danger">
+                            NOTIFICATIONS
+                        </h2>
+                    </a>
+                </div>
+                <hr>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div id="error" class="col-md-6"></div>
+        </div>
+        <div class="row">
+            {% if NOTFS %}
+                {% csrf_token %}
+                {% for notification in NOTFS %}
+                    {% if notification.is_seen == False %}
+                        <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+                            <p class="bg-light p-2 text-info"><a  href="{{notification.get_seen_status_link}}">{{notification.content}}
+                            </a><br>
+                            - <small><i>{{notification.created|timesince}} ago</i></small>
+                            </p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% for notification in NOTFS %}
+                    {% if notification.is_seen == True %}
+                        <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+                            <p class="bg-light p-2"><a  href="{{notification.post.get_absolute_url}}">{{notification.content}}
+                            </a><br>
+                            - <small><i>{{notification.created|timesince}} ago</i></small>
+                            </p>
+                        </div>
+                        <hr>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center text-danger font-weight-bold">No notifications!</div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js_files %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            
+        });
+    </script>
+{% endblock js_files %}

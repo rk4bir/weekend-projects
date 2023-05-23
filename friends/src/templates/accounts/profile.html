@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ request.user.get_full_name }}{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 100px!important"></div>
+{% endblock slider %}
+
+{% block post %}{% endblock post %}
+{% block content %}
+    <div class="container mb-5 mt-3 pb-5 min_height_400">
+        <div class="row">
+        	<div class="card col-md-4 bg-light" style="height: auto;">
+	        	<div class="">
+			        <img class="img-fluid" style="width: 100%; height: 160px" src="{% static 'images/services_parallax.jpg' %}" alt="...">
+			    </div>
+			    <div class="text-center" style="margin-top: -80px">
+			    	{% if account.drive_photo_link != '' %}
+                        <img class="mb-1 rounded-circle profile_photo" src="{{ account.drive_photo_link }}" alt="...">
+                    {% else %}
+                        <img class="mb-1 rounded-circle profile_photo" src="{% static 'images/blog_1.jpg' %}" alt="...">
+                    {% endif %}
+			    	<br>
+			    	<h2>{{ request.user.get_full_name }}</h2>
+			    	<h4 class="text-secondary">{{ request.user.email }}</h4>
+                    <a class="text-success font-weight-bold" href="{% url 'accounts:change-password' %}">Change Password</a>
+			    </div>
+	        	<div class="card-body">
+	        		<a href="{% url 'accounts:edit' %}" class="btn btn-sm btn-danger">Edit</a>
+			    	<ul class="list-group">
+					    <li class="list-group-item">
+					    	<span class="alert-link">Username: </span>{{ request.user.username }}
+					    </li>
+                        <li class="list-group-item">
+					    	<span class="alert-link">First Name: </span>{{ request.user.first_name }}
+					    </li>
+					    <li class="list-group-item">
+					    	<span class="alert-link">Last Name: </span>{{ request.user.last_name }}
+					    </li>
+                        {% if account.about_me != '' %}
+                            <li class="list-group-item text-center">
+                                "{{ account.about_me }}"
+                           </li>
+                        {% endif %}
+			 		</ul>
+	        	</div>
+	        </div> 
+	        <div class="col-md-8">
+            {% if posts %}
+                {% for post in posts %}
+                    <hr>
+                    <article class="blog_post mt-2 bg-light p-2" style="border-radius: 10px">
+                        <h3 class="blog_post_title mb-0"><a href="{{ post.account.get_profile_link }}">{{ post.account.user.get_full_name }}</a></h3>
+                        <div class="blog_post_meta">
+                            <small class="blog_post_author text-muted">Last edit: {{ post.updated|date }} | </small>
+                            <small class="blog_post_category text-muted">{{post.likes}} likes | </small>
+                            <small class="blog_post_comments text-muted">{{post.comments}} comments</small>
+                        </div>
+                        <div class="row">
+                            {% if post.drive_photo1_link != "" %}
+                                <div class="col-md">
+                                    <img src="{{ post.drive_photo1_link }}" class="img-fluid post_img">
+                                </div>
+                            {% endif %}
+                            {% if post.drive_photo2_link != '' %}
+                                <div class="col-md">
+                                    <img src="{{ post.drive_photo2_link }}" class="img-fluid post_img">
+                                </div>
+                            {% endif %}
+                            {% if post.drive_photo3_link != '' %}
+                                <div class="col-md">
+                                    <img src="{{ post.drive_photo3_link }}" class="img-fluid post_img">
+                                </div>
+                            {% endif %}
+
+                        </div>
+                        <div class="blog_post_text">
+                            <p>{{ post.content|truncatechars:160 }}</p>
+                        </div>
+                        <a href="{{ post.get_absolute_url }}" class="blog_post_link">read more
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                 width="13px" height="7px" viewBox="0 0 13 7" enable-background="new 0 0 13 7" xml:space="preserve">
+                            <polygon id="arrow_poly_1" class="arrow_poly" fill="#FF4200" points="13,3.5 9,0 9,3 0,3 0,4 9,4 9,7 "/>
+                            </svg>
+                        </a>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <h3 class="text-warning text-center mt-5">Nothing to show!</h3>
+            {% endif %}
+
+            <!-- PAGINATION -->    
+            {% if posts.has_other_pages %}
+                <div class="blog_nav text-center">
+                    <ul class="mt-5">
+                        {% if posts.has_previous %}
+                            <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                            <li><a class="disabled">&laquo;</a></li>
+                        {% endif %}
+                        {% for i in posts.paginator.page_range %}
+                          {% if posts.number == i %}
+                            <li class="active"><a href="#">{{ i }}</a></li>
+                          {% else %}
+                            <li><a  href="?page={{ i }}">{{i}}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                        {% if posts.has_next %}
+                            <li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                            <li><a href="" class="disabled">&raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+            </div>
+        </div>       
+    </div>
+{% endblock content %}
+
+{% block js_files %}
+    <script type="text/javascript">
+       
+    </script>
+{% endblock js_files %}

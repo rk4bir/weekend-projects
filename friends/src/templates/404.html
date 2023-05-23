@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}404 Not Found{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 100px!important"></div>
+{% endblock slider %}
+{% block post %}{% endblock post %}
+{% block content %}
+    <div class="container mb-5 mt-3 pb-5 min_height_400">
+        <div class="row mt-5">
+            <div class="col-12">
+                <img src="{% static 'images/404.png' %}" class="img-fluid">
+            </div>
+            <h2 class="text-right text-danger font-weight-bold col-12">
+                Not Found!
+            </h2>
+            <div class="col-12">
+                <h3 class="font-weight-bold">Requested page</h3>
+                <ul class="ml-5">
+                    <li><span class="fa fa-circle-notch "></span> is temporary unavailable</li>
+                    <li><span class="fa fa-circle-notch "></span> is removed</li>
+                    <li><span class="fa fa-circle-notch "></span> is under construction</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js_files %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock js_files %}

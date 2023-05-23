@@ -1,0 +1,337 @@
+{% extends 'posts/blog.html' %}
+{% load staticfiles %}
+{% block extra_css %}
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/blog_post_styles.css' %}">
+{% endblock %}
+{% block title %}{{ post.content|truncatechars:60 }}{% endblock title %}
+{% block create_post %}{% endblock create_post %}
+
+
+{% block content %}
+<!-- Blog Content -->
+<div class="blog_content bg-light">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="blog_main_content">
+                    <!-- Blog Post -->
+					<article class="blog_post">
+						<div class="date_box d-flex flex-column align-items-center justify-content-center">
+							<span>{{ post.created|date }}</span>
+						</div>
+						<div class=" text-right">
+							{% if request.user.is_authenticated and request.user == post.account.user %}
+					            <a href="{{ post.get_delete_url }}" class=" mr-1 btn btn-sm btn-danger"><span class="text-white fa fa-trash"></span></a>
+					            <a href="{{ post.get_edit_url }}" class="btn btn-sm btn-success"><span class="text-white fa fa-edit"></span></a>
+					        {% endif %}
+				        </div>
+						<h3 class="blog_post_title"><a href="{{ post.account.get_public_profile_link}}">{{ post.account.user.get_full_name }}</a></h3>
+						<div class="blog_post_meta">
+							<span class="blog_post_author">Edited: {{ post.updated|date }}</span>
+							<span class="blog_post_comments">{{post.comments}} comments</span>
+						</div>
+						{% if post.drive_photo1_link != '' %}
+							<div class="blog_post_image mb-2">
+								<div class="blog_post_image_background" style="background-image:url({{post.drive_photo1_link}})"></div>
+							</div>
+						{% endif %}
+						{% if post.drive_photo2_link != '' %}
+							<div class="blog_post_image mb-2">
+								<div class="blog_post_image_background" style="background-image:url({{post.drive_photo2_link}})"></div>
+							</div>
+						{% endif %}
+						{% if post.drive_photo3_link != '' %}
+							<div class="blog_post_image mb-2">
+								<div class="blog_post_image_background" style="background-image:url({{post.drive_photo3_link}})"></div>
+							</div>
+						{% endif %}
+						<div class="blog_post_text text-justify mt-2">
+							<p>{{ post.content|safe }}</p>
+						</div>
+						<hr>
+						<!-- COMMENT FORM -->
+						{% if request.user.is_authenticated %}
+							<div class="blog_post_reply mt-5 ">
+								<form id="reply_form" action="{% url 'comments:create' %}" method="post">{% csrf_token %}
+									<input type="hidden" name="slug" value="{{ post.slug }}">
+									<div>
+										<textarea id="comment" class="text_field reply_form_message" name="comment"  placeholder="Write a comment..." rows="4" required data-error="Please, write a comment."></textarea>
+									</div>
+									<div class="text-right">
+										<button id="reply_form_submit" type="submit" class="btn btn-sm mt-2 btn-primary trans_300">
+											<span class="fa fa-paper-plane"></span> Comment
+										</button>
+									</div>
+								</form>
+							</div>
+						{% endif %}
+						<!-- Blog Post Comments -->
+						<div class="blog_post_comments mt-0">
+							<div class="blog_post_subtitle comments_subtitle">comments</div>
+							
+							<!-- Comments -->
+							<div class="blog_post_comments_container">
+								{% if comments %}
+									{% for comment in comments %}
+									<!-- Comment -->
+									<div class="blog_post_comment d-flex flex-row">
+										<div class="blog_post_comment_image">
+											{% if comment.account.photo %}
+												<img src="{{comment.account.photo.url}}" alt="">
+											{% else %}
+												<img src="{% static 'images/blog_1.jpg' %}" alt="">
+											{% endif %}
+										</div>
+										<div class="blog_post_comment_content">
+											{% if request.user.is_authenticated and request.user == comment.account.user %}
+												<div class="mb-3">
+													<a href="{{comment.get_delete_url}}" class="btn btn-sm btn-danger"><span class="fa fa-trash"></span></a>
+													<a href="{{comment.get_edit_url}}" class="btn btn-sm  btn-success"><span class="fa fa-edit"></span></a>
+												</div>
+											{% endif %}
+											<div class="blog_post_comment_meta">
+												<div class="blog_post_comment_name"><a href="{{comment.account.get_public_profile_link}}">{{comment.account.user.get_full_name}}</a></div>
+												<div class="blog_post_comment_date">{{comment.created|timesince}} ago</div>
+											</div>
+											
+											<div class="blog_post_comment_text">
+												<p>{{comment.content}}</p>
+											</div>
+
+
+											<div class="text-center">
+												<a href="#" data-toggle="collapse" data-target="#collapsedReplies{{comment.pk}}" class="blog_post_link text-danger mb-4 mt-2 font-weight-bold" data-toggle="dropdown" >replies ({{comment.replies.all.count}})</a>
+											</div>
+
+
+
+											<!-- REPLIES -->
+											<div class="collapse" id="collapsedReplies{{comment.pk}}">
+												<div class="blog_post_reply mt-0 ">
+													<form id="reply_form" action="{% url 'comments:reply-create' %}" method="post">{% csrf_token %}
+														<input type="hidden" name="post_slug" value="{{post.slug}}">
+														<input type="hidden" name="parent_id" value="{{comment.id}}">
+														<div>
+															<textarea id="reply" class="text_field reply_form_message" name="reply"  placeholder="Write a reply" rows="4" required data-error="Please, write a reply."></textarea>
+														</div>
+														<div class="text-right">
+															<button id="reply_form_submit" type="submit" class="btn btn-sm mt-2 btn-primary trans_300">Reply</button>
+														</div>
+													</form>
+												</div>
+												{% for reply in comment.replies.all %}										
+													<div class="blog_post_comment d-flex flex-row">
+														<div class="blog_post_reply_content">
+															{% if request.user.is_authenticated and request.user == reply.account.user %}
+																<div class="mb-3">
+																	<a href="{{reply.get_delete_url}}" class="btn btn-sm btn-danger"><span class="fa fa-trash"></span></a>
+																	<a href="{{reply.get_edit_url}}" class="btn btn-sm  btn-success"><span class="fa fa-edit"></span></a>
+																</div>
+															{% endif %}
+															<div class="blog_post_comment_meta">
+																<div class="blog_post_comment_name"><a href="{{reply.account.get_public_profile_link}}"><small class="font-weight-bold text-dark">{{reply.account.user.get_full_name}}</small></a></div>
+																<div class="blog_post_comment_date"><small>{{reply.created|timesince}} ago</small></div>
+															</div>
+															
+															<div class="blog_post_comment_text">
+																<p><small>{{reply.content}}</small></p>
+															</div>
+														</div>
+													</div>
+													<hr>
+												{% endfor %}<!-- REPLIES -->
+											</div>
+										</div>
+									</div> <!-- Comment -->	
+									<hr>
+
+
+									{% endfor %}
+								{% endif %}
+							</div><!-- Comment -->
+						</div>
+						
+					</article>
+				</div>
+			</div>
+
+			<!-- Sidebar -->
+			<div class="col-lg-4">
+				<div class="blog_sidebar">
+
+					<!-- Search -->
+					<div class="sidebar_section">
+						<div class="sidebar_search">
+							<form action="{% url 'search' %}" method="post">{% csrf_token %}
+								<div id="search_form" class="search_form">
+									<input id="blog_search" name="q" type="search" placeholder="enter keywords" required="required" data-error="Valid keywords required.">
+									<button id="search_submit" type="submit" class="search_submit_btn trans_300" value="Submit">
+										<img src="{% static 'images/search.png' %}" alt="">
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<!-- Recent Posts -->
+					<div class="sidebar_section">
+						<div class="sidebar_recent">
+							<div class="sidebar_title">recent posts</div>
+
+							<!-- Recent Post -->
+							{% for post in posts %}
+                                {% if forloop.counter < 5 %}
+                                    <div class="recent_post d-flex flex-row justify-content-start">
+                                        <div class="recent_post_image">
+                                            {% if post.drive_photo1_link != '' %}
+                                                <a href="{{ post.get_absolute_url }}"><img class="side_post_photo" src="{{ post.drive_photo1_link }}" alt=""></a>
+                                            {% else %}
+                                                <a href="{{ post.get_absolute_url }}"><img class="side_post_photo" src="{% static 'images/logo.png' %}" alt=""></a>
+                                            {% endif %}
+                                        </div>
+                                        <div class="recent_post_content">
+                                            <h4 class="recent_post_title"><a href="">{{ post.content|truncatechars_html:20 }}</a></h4>
+                                            <span class="recent_post_date">{{ post.created|date }}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+						</div>
+					</div>
+					<!-- Tabs -->
+					<div class="sidebar_section">
+						<div class="sidebar_tabs">
+
+							<!-- Tabs Nav -->
+							<div class="tabs_container">
+								<ul class="tabs">
+									<li class="tab active" data-active-tab="tab_1"><span>popular</span></li>
+									<li class="tab" data-active-tab="tab_2"><span>comments</span></li>
+								</ul>
+							</div>
+
+							<!-- Tab Containers -->
+							<div id="tab_1" class="tab_container active">
+
+								<!-- Popular -->
+								<div class="sidebar_popular">
+									{% if posts %}
+										{% for post in posts %}
+											{% if forloop.counter < 5 %}
+												<!-- Popular Post -->
+												<div class="popular_post d-flex flex-row justify-content-start">
+													<div class="popular_post_image">
+														{% if post.drive_photo1_link != '' %}
+															<a href="{{ post.get_absolute_url}}"><img src="{{ post.drive_photo1_link }}" class="side_post_photo" alt=""></a>
+														{% else %}
+															<a href="{{ post.get_absolute_url}}"><img src="{% static 'images/logo.png' %}" class="side_post_photo" alt=""></a>
+														{% endif %}
+													</div>
+													<div class="popular_post_content">
+														<h4 class="popular_post_title"><a href="{{post.get_absolute_url}}">{{post.content|truncatechars_html:20}}</a></h4>
+														<span class="popular_post_date">{{post.created|date}}</span>
+													</div>
+												</div>
+											{% endif %}
+										{% endfor %}
+									{% endif %}
+								</div>
+							</div>
+
+							<div id="tab_2" class="tab_container">
+
+								<!-- Comments -->
+								<div class="sidebar_comments">
+
+									{% if comments %}
+										{% for comment in comments %}
+											{% if forloop.counter < 6 %}
+											<!-- Comment -->
+											<div class="comment d-flex flex-row justify-content-start">
+												<div class="comment_icon">
+													<i class="far fa-comment"></i>
+												</div>
+												<div class="comment_content">
+													<p class="comment_text">{{comment.content}}</p>
+													<div class="comment_meta">
+														<span>by {{comment.account.user.first_name}}</span>
+														<span>{{comment.created|date}}</span>
+													</div>
+												</div>
+											</div>
+											{% endif %}
+										{% endfor %}
+									{% endif %}
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<!-- Gallery -->
+
+					<div class="sidebar_section">
+						<div class="sidebar_gallery">
+							<div class="sidebar_title">gallery</div>
+
+							<ul class="gallery_items">
+
+								<!-- Gallery Item -->
+								<li class="gallery_item">
+									<a href="{% static 'images/gallery_1_large.jpg' %}">
+										<img src="{% static 'images/gallery_1.jpg' %}" alt="">
+									</a>
+								</li>
+
+                                <!-- Gallery Item -->
+								<li class="gallery_item">
+									<a href="{% static 'images/gallery_2_large.jpg' %}">
+										<img src="{% static 'images/gallery_2.jpg' %}" alt="">
+									</a>
+								</li>
+
+                                <!-- Gallery Item -->
+								<li class="gallery_item">
+									<a href="{% static 'images/gallery_3_large.jpg' %}">
+										<img src="{% static 'images/gallery_3.jpg' %}" alt="">
+									</a>
+								</li>
+
+                                <!-- Gallery Item -->
+								<li class="gallery_item">
+									<a href="{% static 'images/gallery_4_large.jpg' %}">
+										<img src="{% static 'images/gallery_4.jpg' %}" alt="">
+									</a>
+								</li>
+
+                                <!-- Gallery Item -->
+								<li class="gallery_item">
+									<a href="{% static 'images/gallery_5_large.jpg' %}">
+										<img src="{% static 'images/gallery_5.jpg' %}" alt="">
+									</a>
+								</li>
+
+                                <li class="gallery_item">
+									<a href="{% static 'images/gallery_6_large.jpg' %}">
+										<img src="{% static 'images/gallery_6.jpg' %}" alt="">
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Quote -->
+
+					<div class="sidebar_section">
+						<div class="sidebar_quote">
+							<div class="sidebar_title">quote of the day</div>
+							<p>No self is of itself alone. It has a long chain of intellectual ancestors. The "I" is chained to ancestry by many factors… This is not mere allegory, but an eternal memory</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+{% endblock content %}

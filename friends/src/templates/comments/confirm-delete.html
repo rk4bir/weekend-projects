@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Comment Delete{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 120px!important"></div>
+{% endblock slider %}
+{% block post %}{% endblock post %}
+
+
+{% block content %}
+<div class="super_container">
+    <div class="container min_height_500">
+        <div class="mt-5 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+            <p class="text-success">{{ comment.content }}</p>
+            <p class="alert-link">Are you sure you want to delete this comment permanently?</p>
+            <form action="" method="post">{% csrf_token %}
+                <input type="hidden" name="slug" value="{{ post.slug }}">
+                <input type="hidden" name="response" value="yes">
+                <button type="submit" class="btn btn-md btn-danger">Delete</button>
+                <a href="{{ post.get_absolute_url }}" class="btn btn-md btn-success">Cancel</a>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

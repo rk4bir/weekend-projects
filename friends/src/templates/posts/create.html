@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Update Profile{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 150px!important"></div>
+{% endblock slider %}
+{% block post %}{% endblock post %}
+
+
+{% block content %}
+    <div class="bg-white min_height_500 container">
+        <div class="text-center">
+            <button type="button" class="font-weight-bold btn btn-lg btn-success mb-2">
+                Post a problem
+            </button>
+        </div>
+        {% if form.non_field_errors %}
+            <div class="alert alert-warning font-weight-bold text-nowrap">
+                {{ form.non_field_errors|first }}
+            </div>
+        {% endif %}
+        <form action="" method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            {% for field in form %}
+                {% if forloop.counter == 1 %}
+                    <div class="col-12">{{ field }}</div>
+                {% endif %}
+            {% endfor %}
+            <div class="mt-1 ml-2 row">
+                {% for field in form %}
+                    {% if forloop.counter > 1 %}
+                        <div style="background: black" class="post_photo_preview mr-1">
+                            {{ field }}
+                            <div class="font-weight-bold text-white ml-3 mt-2" id="photo{{forloop.counter0}}">+Add</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="text-right col-12 mr-1 mt-1">
+                <input class="btn btn-md btn-info mb-3" type="submit" id="postSubmit" value="Post">
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+
+{% block js_files %}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			// PHOTO OBJECT TRACKER
+		    function readURL(input, ID) {
+		        if (input.files && input.files[0]) {
+		            var reader = new FileReader();
+		            reader.onload = function (e) {
+		                $('#'+ID).parent('div').attr({"style": "background-image: url('"+e.target.result+"')"});
+		            }
+		            reader.readAsDataURL(input.files[0]);
+		        }
+		    }
+
+		    // IMAGE PREVIEW HANDLER
+		    function handleImage(ID, inputID){
+				if( $('#'+ID).parent('div').attr('style') == 'background: black' ){
+					$('#'+inputID).click();
+					$("#"+inputID).change(function(){
+				        readURL(this, ID);
+				    });
+					$('#'+ID).html('Remove');
+				}else{
+					$('#'+ID).parent('div').attr({'style': 'background: black'});
+					// MAKE EMPTY THE INPUT
+					$('#'+inputID).replaceWith($('#'+inputID).val('').clone(true));
+					$('#'+ID).html('+Add');
+				}
+		    } /* handleImage */
+
+		    // PREVIEW INPUT IMAGES
+			$('#photo1').click(function(){
+				handleImage('photo1', 'inPhoto1');
+			});
+			$('#photo2').click(function(){
+				handleImage('photo2', 'inPhoto2');
+			});
+			$('#photo3').click(function(){
+				handleImage('photo3', 'inPhoto3');
+			});
+		}); /* DOCUMENT READY */
+	</script>
+{% endblock js_files %}

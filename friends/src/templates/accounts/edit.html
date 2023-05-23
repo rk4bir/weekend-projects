@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Edit Profile{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 150px!important"></div>
+{% endblock slider %}
+{% block post %}{% endblock post %}
+{% block content %}
+    <div class="container mb-5 mt-3 pb-5 min_height_400">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="text-center mb-3">
+                    <img src="{% static 'images/logo.png' %}" class="img-fluid" style="height: 80px;">
+                </div>
+                <div class="text-center">
+                    <h2 class="text-center active btn btn-md btn-danger">Update Profile</h2>
+                </div>
+                <hr>
+            </div>
+        </div>
+        {% if form.non_field_errors %}
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 alert alert-warning text-left">
+                    <span class="alert-link">Possible errors:</span><br>
+                    {{ form.non_field_errors|first|safe }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        <form class="form-horizontal" role="form" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-sm-4 offset-sm-4 text-center">
+            <!-- PROFILE PHOTO -->
+            {% if account.drive_photo_link != '' %}
+                <div style="background-image: url('{{ account.drive_photo_link }}')" class="account_photo_preview">
+                    <div class="font-weight-bold text-white pt-5" id="photo">CHANGE</div>
+                </div>
+            {% else %}
+                <div style="background: black" class="account_photo_preview">
+                    <div class="font-weight-bold text-white pt-5" id="photo">SELECT PP</div>
+                </div>
+            {% endif %}
+            </div>
+            {% for field in form %}
+                <div class="row ">
+                    <div class="col-md-3 field-label-responsive">
+                        <label class="font-weight-bold">{{field.label_tag}}</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                {{ field }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-sm btn-success">Save changes</button>
+                    <div class="text-right">
+                        <a class="alert-link" href="{% url 'accounts:index' %}"><< Back to profile</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block js_files %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+			// PHOTO OBJECT TRACKER
+		    function readURL(input, ID) {
+		        if (input.files && input.files[0]) {
+		            var reader = new FileReader();
+		            reader.onload = function (e) {
+		                $('#'+ID).parent('div').attr({"style": "background-image: url('"+e.target.result+"')"});
+		            }
+		            reader.readAsDataURL(input.files[0]);
+		        }
+		    }
+		    // IMAGE PREVIEW HANDLER
+		    function handleImage(ID, inputID){
+				if( $('#'+ID).parent('div').attr('style') == 'background: black' ){
+					$('#'+inputID).click();
+					$("#"+inputID).change(function(){
+				        readURL(this, ID);
+				    });
+					$('#'+ID).html('REMOVE');
+				}else{
+					$('#'+ID).parent('div').attr({'style': 'background: black'});
+					// MAKE EMPTY THE INPUT
+					$('#'+inputID).replaceWith($('#'+inputID).val('').clone(true));
+					$('#'+ID).html('SELECT PP');
+				}
+		    } /* handleImage */
+
+		    // PREVIEW INPUT IMAGES
+			$('#photo').click(function(){
+				handleImage('photo', 'inPhoto');
+			});
+		}); /* DOCUMENT READY */
+    </script>
+{% endblock js_files %}

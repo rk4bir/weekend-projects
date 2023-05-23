@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/icon.png" />
+	<title>Tic Tac Toe</title>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="container">
+			<div class="text-right text-danger">
+				<a style="text-decoration: underline; font-size: 15px;" href="http://rk4bir.github.io/" 
+					class="text-primary">Goto Home</a>
+			</div>
+			<!-- TITLE -->
+			<h1 class="text-center text-white font-weight-bold pt-4 project-title">
+				<span style="font-size: 45px">{</span>
+				<span class='text-danger' style="font-size: 30px">Tic</span > <span class="text-primary" style="font-size: 26px">Tac</span> <span class="text-warning" style="font-size: 24px">Toe</span>
+				<span style="font-size: 26px">}</span>
+			</h1>
+			<hr style="height: 0px; border: 1px solid white">
+			<!-- GAME LEVEL SELECT -->
+			<div class="input-group mt-4">
+				<button style="border-radius: 0" 
+					class="btn btn-sm bg-white font-weight-bold">Difficulty: </button>
+				<button id="easy" onclick="set_difficulty(this.value);" 
+					value='0' style="border-radius: 0"
+					class="btn btn-sm btn-success">Easy</button>
+				<button id="medium" onclick="set_difficulty(this.value);" 
+					value='0.5' style="border-radius: 0"
+					class="btn btn-sm btn-danger">Medium</button>
+				<button id="hard" onclick="set_difficulty(this.value);" 
+					value="1" style="border-radius: 0" 
+					class="btn btn-sm btn-danger">Hard</button>
+			</div>
+			<!-- 2D GRID PLAYGROUND -->
+			<div class="pt-4">
+				<div class="card-body d-flex justify-content-center">
+					<table class="grid-table">
+						<tr class="row1">
+							<td role='button' onclick="player_turn(this.id)" id="row1-col1"></td>
+							<td role='button' onclick="player_turn(this.id)" id="row1-col2"></td>
+							<td role='button' onclick="player_turn(this.id)" id="row1-col3"></td>
+						</tr>
+						<tr class="row2">
+							<td role='button' onclick="player_turn(this.id)" id="row2-col1"></td>
+							<td role='button' onclick="player_turn(this.id)" id="row2-col2"></td>
+							<td role='button' onclick="player_turn(this.id)" id="row2-col3"></td>
+						</tr>
+						<tr class="row3">
+							<td role='button' onclick="player_turn(this.id)" id="row3-col1"></td>
+							<td role='button' onclick="player_turn(this.id)" id="row3-col2"></td>
+							<td role='button' onclick="player_turn(this.id)" id="row3-col3"></td>
+						</tr>
+					</table>
+				</div>
+				<div style="font-size: 16px" id="info" class="mt-4 text-white text-center font-weight-bold">
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="assets/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/game.js"></script>
+	<script type="text/javascript">
+		$('.container-fluid').css('height', $(window).height());
+		$(document).ready(function(){
+			
+		});
+	</script>
+</body>
+</html>

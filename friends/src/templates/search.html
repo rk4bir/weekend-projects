@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}FRIENDS - Search{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 120px!important"></div>
+{% endblock slider %}
+{% block post %}{% endblock post %}
+{% block content %}
+    <div class="container min_height_500 mb-5 mt-3 pb-5 min_height_400">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="text-center">
+                    <div class="text-center mb-3">
+                        <img src="{% static 'images/logo.png' %}" class="img-fluid" style="height: 80px;">
+                    </div>
+                    <a href="{% url 'accounts:login' %}">
+                        <h2 class="text-center font-weight-bold active btn btn-md btn-danger">
+                            SEARCH ENGINE
+                        </h2>
+                    </a>
+                </div>
+                <hr>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Search -->
+            <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                <!--<form action="{% url 'search' %}" method="get">-->
+                    {% csrf_token %}
+                    <div>
+                        <input id="blog_search" name="q" value="{{query}}" type="search" placeholder="enter keywords" class="form-control">
+                        <button id="search_submit" type="submit" class="search_submit_btn trans_300" value="Submit">
+                            <img src="{% static 'images/search.png' %}" alt="">
+                        </button>
+                    </div>
+                <!--</form>-->
+
+                <!-- RESULT -->
+                <ul class="list-group list_style_none m-2" style="display: none;" id="searchResult"></ul>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block js_files %}
+    <script type="text/javascript">
+        function jQuerySearch(){
+            var query = $('#blog_search').val();
+            if( query.length > 0 ){
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'search' %}",
+                    data:{
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+                        query: query,
+                    },
+                    success: function(data){
+                        $('#searchResult').fadeIn(100);
+                        $('#searchResult').html(data);
+                    },
+                });
+            }
+        }
+        $(document).ready(function(){
+            var value = $('#blog_search').val();
+            if( value.length > 0 ){
+                jQuerySearch();
+            }
+            $('#blog_search').keyup(function(){
+                jQuerySearch();
+            });
+        });
+    </script>
+{% endblock js_files %}

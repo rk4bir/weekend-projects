@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Edit Post{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 130px!important"></div>
+{% endblock slider %}
+{% block post %}{% endblock post %}
+
+
+{% block content %}
+<div class="super_container">
+	<!-- Page Top -->
+	<div class="home prlx_parent">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
+                    <div class="text-center mb-3">
+                        <img src="{% static 'images/logo.png' %}" class="img-fluid" style="height: 80px;">
+                    </div>
+                    <div class="text-center">
+                        <a href="{% url 'accounts:login' %}">
+                            <h2 class="font-weight-bold text-center active btn btn-md btn-success">
+                                EDIT POST
+                            </h2>
+                        </a>
+                    </div>
+                    <hr>
+                </div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Blog Content -->
+
+	<div class="blog_content min_height_400">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 offset-md-2">
+					<div class="blog_main_content">
+                        <article class="blog_post mt-2 p-2" style="border-radius: 10px">
+                            <form action="" method="post">{% csrf_token %}
+                                {{ form.as_p }}
+                                <div>
+                                    <button class="btn btn-md btn-success">
+                                        <span class="fa fa-paper-plane"></span> Update
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="text-right">
+                            	<a class="font-weight-bold" href="{{ post.get_absolute_url }}"><< Back to post</a>
+                            </div>
+                        </article>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

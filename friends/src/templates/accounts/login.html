@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Login{% endblock title %}
+
+{% block slider %}
+    <div style="margin-top: 160px!important"></div>
+{% endblock slider %}
+{% block post %}{% endblock post %}
+{% block content %}
+    <div class="container mb-5 mt-3 pb-5 min_height_400">
+        <form class="form-horizontal" role="form" method="POST" action="">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="text-center mb-3">
+                        <img src="{% static 'images/logo.png' %}" class="img-fluid" style="height: 80px;">
+                    </div>
+                    <div class="text-center">
+                        <a href="{% url 'accounts:create' %}">
+                            <h2 class="text-center btn btn-md btn-dark">
+                                Registration
+                            </h2>
+                        </a>
+                        <a href="{% url 'accounts:login' %}">
+                            <h2 class="text-center active btn btn-md btn-danger">
+                                Login
+                            </h2>
+                        </a>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div id="error" class="col-md-6"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="name"></label>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
+                            <input type="text" name="username" class="form-control" id="username" placeholder="E-mail" autofocus>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="password"></label>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group has-danger">
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <button type="submit" id="submit" class="btn btn-sm btn-success"><i class="fa fa-user"></i> Login</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 text-right">
+                    <a href="{% url 'accounts:forgot-password' %}">Forgot password?</a><br>
+                    <a href="{% url 'accounts:activate' %}">Activate account</a>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block js_files %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $('#submit').click(function(e){
+                $('#ajaxLoader').show();
+                e.preventDefault();
+                if( $('#username').val() == '' || $('#password').val() == '' ){
+                    $('#error').html("<div class='alert alert-danger'>Both fields are required.</div>");
+                    $('#ajaxLoader').hide();
+                }else{
+                    $('#submit').html('<i class="fa fa-user"></i> Checking...');
+                    $.ajax({
+                        type: 'POST',
+                        url: "{% url 'accounts:login' %}",
+                        data:{
+                            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+                            'username': $('#username').val(),
+                            'password': $('#password').val(),
+                        },
+                        success: function(response){
+                            if( response == "" ){
+                                $('#submit').html('<i class="fa fa-user"></i> Logged in')
+                                $('#ajaxLoader').hide();
+                                window.location = "/posts/";
+                            }else{
+                                $('#error').html("<div class='alert alert-danger'>"+response+"</div>");
+                                $('#submit').html('<i class="fa fa-user"></i> Login')
+                                $('#ajaxLoader').hide();
+                            }
+                        },
+                        error: function(){
+                            $('#submit').html('<i class="fa fa-user"></i> Login')
+                            $('#ajaxLoader').hide();
+                            alert("Something went wrong. Please try again.")
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock js_files %}

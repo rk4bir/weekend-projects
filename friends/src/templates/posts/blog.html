@@ -1,0 +1,526 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="shortcut icon" type="image/png" href="{% static 'images/logo.png' %}"/>
+<title>{% block title %}FRIENDS - Blog{% endblock title %}</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Zeta Template Project - Blog">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}">
+<link href="{% static 'plugins/fontawesome-free-5.0.1/css/fontawesome-all.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/js-flickr-gallery-1.24/js-flickr-gallery.css' %}">
+<link href="{% static 'plugins/colorbox/colorbox.css' %}" rel="stylesheet" type="text/css">
+{% block extra_css %}{% endblock extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/blog_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/blog_responsive.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/main.css' %}">
+</head>
+
+<body>
+<div class="super_container">
+	<!-- Header -->
+	<header class="header d-flex flex-row justify-content-end align-items-center">
+		<!-- Logo -->
+		<div class="logo_container mr-auto">
+			<div class="logo">
+				<a href="{% url 'homepage' %}"><span>F</span>Friends<span></span></a>
+			</div>
+		</div>
+		<!-- Main Navigation -->
+		<nav class="main_nav justify-self-end">
+			<ul class="nav_items">
+				<li class="{% if request.path == '/' %}active{% endif%}"><a href="{% url 'homepage' %}"><span>home</span></a></li>
+                <li class="{% if '/posts/' in request.path %}active{% endif%}"><a href="{% url 'posts:list' %}"><span>blog</span></a></li>
+				{% if request.user.is_authenticated %}
+					<li class="{% if request.path == '/notifications/' %}active{% endif %}">
+						<a href="{% url 'notifications' %}">
+							<span class="fa fa-bullhorn"> [{{NOTFS_COUNT}}]</span>
+						</a>
+					</li>
+					<li class="{% if request.path == '/accounts/' %}active{% endif %}">
+						<a href="{% url 'accounts:index' %}"><span>Profile</span></a>
+					</li>
+					<li class="{% if request.path == '/contact-us/' %}active{% endif %}" >
+						<a href="{% url 'contact-us' %}"><span>contact</span></a>
+					</li>
+					<li>
+						<a href="{% url 'accounts:logout' %}?next={{ request.path }}"><span>Log Out</span></a>
+					</li>
+				{% else %}
+					<li class="{% if request.path == '/accounts/register/' or request.path == '/accounts/login/' %}active{% endif %}" ><a href="{% url 'accounts:login' %}?next={{ request.path }}" class=""><span>Register/Login</span></a></li>
+					<li class="{% if request.path == '/contact-us/' %}active{% endif %}" ><a href="{% url 'contact-us' %}"><span>contact</span></a></li>
+				{% endif %}
+
+			</ul>
+		</nav>
+
+		<!-- Hamburger -->
+		<div class="hamburger_container">
+			<span class="hamburger_text">Menu</span>
+			<span class="hamburger_icon"></span>
+		</div>
+
+	</header>
+
+	<!-- Menu -->
+	<div class="fs_menu_overlay"></div>
+	<div class="fs_menu_container">
+		<div class="fs_menu_shapes"><img src="{% static 'images/menu_shapes.png' %}" alt=""></div>
+		<nav class="fs_menu_nav">
+			<ul class="fs_menu_list">
+				<li><a href="{% url 'homepage' %}"><span><span>H</span>Home</span></a></li>
+				<li><a href="{% url 'posts:list' %}"><span><span>B</span>Blog</span></a></li>
+				<li><a href="{% url 'contact-us' %}"><span><span>C</span>Contact</span></a></li>
+				{% if request.user.is_authenticated %}
+					<li class="{% if request.path == '/notifications/' %}active{% endif %}">
+						<a href="{% url 'notifications' %}">
+							<span class="fa fa-bullhorn"> [{{NOTFS_COUNT}}]</span>
+						</a>
+					</li>
+					<li><a href="{% url 'accounts:index' %}"><span><span>P</span>Profile</span></a></li>
+					<li><a href="{% url 'accounts:logout' %}?next={{ request.path }}"><span><span>L</span>Log Ou</span>t</a></li>
+				{% else %}
+					<li class="{% if request.path == '/users/register/' or request.path == '/users/login/' %}active{% endif %}" ><a href="{% url 'accounts:login' %}?next={{ request.path }}" class=""><span><span>R</span>Register/Login</span></a></li>
+				{% endif %}
+			</ul>
+		</nav>
+		<div class="fs_social_container d-flex flex-row justify-content-end align-items-center">
+			<ul class="fs_social">
+				<li><a href="https://www.facebook.com/r.kabir2011/" target="_blank"><i class="fab fa-facebook-f trans_300"></i></a></li>
+				<li><a href="https://twitter.com/iamrk_" target="_blank"><i class="fab fa-twitter trans_300"></i></a></li>
+				<li><a href="https://github.com/iraihankabir" target="_blank"><i class="fab fa-github trans_300"></i></a></li>
+				<li><a href="https://www.youtube.com/channel/UCmPcUtSFNcN7n4Piv2HgtgA" target="_blank"><i class="fab fa-youtube trans_300"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="super_container">
+	<!-- Page Top -->
+	<div class="home prlx_parent">
+
+		<!-- Parallax Background -->
+		<div class="home_background prlx" style="background-image:url('{% static 'images/blog_background.jpg' %}')"></div>
+		<div class="services_page_shapes" style="background-image:url('{% static 'images/services_page_shapes.png' %}')"></div>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="home_content">
+						<h1>Blog</h1>
+						<span>share knowledge</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- MESSAGES -->
+	{% if messages %}
+	    <div class="container" id="messages">
+	        <div class="col-sm-10 alert alert-success offset-sm-1 text-center  mt-2 mb-2 alert-dismissible fade show" role="alert">
+	            {% for message in messages %}
+	                <li>{{ message|safe }}</li>
+	            {% endfor %}
+	            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	                <span aria-hidden="true">&times;</span>
+	            </button>
+	        </div>
+	    </div>
+	{% endif %}
+{% block create_post %}
+	{% if request.user.is_authenticated %}
+        <div class="text-center mt-2">
+			<button type="button" data-toggle="collapse" data-target="#collapsedPostForm" class="font-weight-bold dropdown-toggle btn btn-sm btn-success mb-2" data-toggle="dropdown">
+				Post a problem
+			</button>
+		</div>
+
+        <div class="mt-2 container">
+	        {% if form.non_field_errors %}
+                <div class="alert alert-warning font-weight-bold text-nowrap">
+                    {{ form.non_field_errors|first }}
+                </div>
+            {% endif %}
+            <div class="collapse bg-white row p-3" id="collapsedPostForm">
+                <form action="{% url 'posts:create' %}?next={{request.path}}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {% if forloop.counter == 1 %}
+                            <div class="col-12">{{ field }}</div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="mt-1 ml-4 row">
+                        {% for field in form %}
+                            {% if forloop.counter > 1 %}
+                                <div style="background: black" class="post_photo_preview rounded-circle mr-1">
+                                    {{ field }}
+                                    <div class="font-weight-bold text-white ml-2 mt-2" id="photo{{forloop.counter0}}">+Add</div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="text-right col-12 mr-1 mt-1">
+                        <input class="btn btn-md btn-info mb-3" type="submit" id="postSubmit" value="Post">
+                    </div>
+                </form>
+            </div>
+		</div>
+	{% endif %}
+{% endblock create_post %}
+</div>
+
+<div class="super_container">
+	{% block content %}
+	<!-- Blog Content -->
+	<div class="blog_content bg-light">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="blog_main_content">
+                        {% if posts %}
+                            {% for post in posts %}
+                                <hr>
+                                <!-- Blog Post -->
+                                <article class="blog_post">
+                                    <div class=" date_box d-flex flex-column align-items-center justify-content-center">
+                                        <span>{{ post.created|date }}</span>
+                                    </div>
+                                    <h3 class="blog_post_title"><a href="{{ post.account.get_public_profile_link }}">{{ post.account.user.get_full_name }}</a></h3>
+                                    <div class="blog_post_meta">
+                                        <span class="blog_post_author">Edited: {{ post.updated|date }}</span>
+                                        <span class="blog_post_comments">{{post.comments}} comments</span>
+                                    </div>
+                                    <div class="row">
+                                    {% if post.drive_photo1_link != '' %}
+                                        <div class="col blog_post_image img-thumbnail">
+                                            <div class="mr-1 blog_post_image_background" style="background-image:url('{{ post.drive_photo1_link }}')"></div>
+                                        </div>
+                                    {% endif %}
+                                    {% if post.drive_photo2_link != '' %}
+                                        <div class="col blog_post_image img-thumbnail">
+                                            <div class="blog_post_image_background" style="background-image:url('{{ post.drive_photo2_link }}')"></div>
+                                        </div>
+                                    {% endif %}
+                                    {% if post.drive_photo3_link != '' %}
+                                        <div class="col blog_post_image img-thumbnail">
+                                            <div class=" blog_post_image_background" style="background-image:url('{{ post.drive_photo3_link }}')"></div>
+                                        </div>
+                                    {% endif %}
+                                	</div>
+                                    <div class="blog_post_text mt-2">
+                                        <p>{{ post.content|truncatechars:160 }}</p>
+                                    </div>
+                                    <a href="{{ post.get_absolute_url }}" class="blog_post_link">read more
+                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                             width="13px" height="7px" viewBox="0 0 13 7" enable-background="new 0 0 13 7" xml:space="preserve">
+                                        <polygon id="arrow_poly_1" class="arrow_poly" fill="#FF4200" points="13,3.5 9,0 9,3 0,3 0,4 9,4 9,7 "/>
+                                        </svg>
+                                    </a>
+                                </article>
+                            {% endfor %}
+                        {% endif %}
+					</div>
+
+					<div class="blog_nav text-center">
+						{% if posts.has_other_pages %}
+				            <ul class="mt-5">
+				                {% if posts.has_previous %}
+					                <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+				                {% else %}
+				                	<li><a class="disabled">&laquo;</a></li>
+				                {% endif %}
+				                {% for i in posts.paginator.page_range %}
+				                  {% if posts.number == i %}
+				                  	<li class="active"><a href="#">{{ i }}</a></li>
+				                  {% else %}
+				                  	<li><a  href="?page={{ i }}">{{i}}</a></li>
+				                  {% endif %}
+				                {% endfor %}
+				                {% if posts.has_next %}
+				                  	<li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+				                {% else %}
+				                	<li><a href="" class="disabled">&raquo;</a></li>
+				                {% endif %}
+				            </ul>
+				        {% endif %}
+					</div>
+				</div>
+
+				<!-- Sidebar -->
+				<div class="col-lg-4">
+					<div class="blog_sidebar">
+
+						<!-- Search -->
+						<div class="sidebar_section">
+							<div class="sidebar_search">
+								<form action="{% url 'search' %}" method="post">{% csrf_token %}
+									<div id="search_form" class="search_form">
+										<input id="blog_search" name="q" type="search" placeholder="enter keywords" required="required" data-error="Valid keywords required.">
+										<button id="search_submit" type="submit" class="search_submit_btn trans_300" value="Submit">
+											<img src="{% static 'images/search.png' %}" alt="">
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<!-- Recent Posts -->
+						<div class="sidebar_section">
+							<div class="sidebar_recent">
+								<div class="sidebar_title">recent posts</div>
+
+								<!-- Recent Post -->
+								{% for post in posts %}
+                                    {% if forloop.counter < 5 %}
+                                        <div class="recent_post d-flex flex-row justify-content-start">
+                                            <div class="recent_post_image">
+                                                {% if post.drive_photo1_link != '' %}
+                                                    <a href="{{ post.get_absolute_url }}"><img class="side_post_photo" src="{{ post.drive_photo1_link }}" alt=""></a>
+                                                {% else %}
+                                                    <a href="{{ post.get_absolute_url }}"><img class="side_post_photo" src="{% static 'images/logo.png' %}" alt=""></a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="recent_post_content">
+                                                <h4 class="recent_post_title"><a href="{{ post.get_absolute_url }}">{{ post.content|truncatechars_html:20 }}</a></h4>
+                                                <span class="recent_post_date">{{ post.created|date }}</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+							</div>
+						</div>
+						<!-- Tabs -->
+						<div class="sidebar_section">
+							<div class="sidebar_tabs">
+
+								<!-- Tabs Nav -->
+								<div class="tabs_container">
+									<ul class="tabs">
+										<li class="tab active" data-active-tab="tab_1"><span>popular</span></li>
+										<li class="tab" data-active-tab="tab_2"><span>comments</span></li>
+									</ul>
+								</div>
+
+								<!-- Tab Containers -->
+								<div id="tab_1" class="tab_container active">
+
+									<!-- Popular -->
+									<div class="sidebar_popular">
+										{% if posts %}
+											{% for post in posts %}
+												{% if forloop.counter < 5 %}
+													<!-- Popular Post -->
+													<div class="popular_post d-flex flex-row justify-content-start">
+														<div class="popular_post_image">
+															{% if post.drive_photo1_link != '' %}
+																<a href="{{ post.get_absolute_url}}"><img src="{{ post.drive_photo1_link }}" class="side_post_photo" alt=""></a>
+															{% else %}
+																<a href="{{ post.get_absolute_url}}"><img src="{% static 'images/logo.png' %}" class="side_post_photo" alt=""></a>
+															{% endif %}
+														</div>
+														<div class="popular_post_content">
+															<h4 class="popular_post_title"><a href="{{ post.get_absolute_url }}">{{post.content|truncatechars_html:20}}</a></h4>
+															<span class="popular_post_date">{{post.created|date}}</span>
+														</div>
+													</div>
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									</div>
+								</div>
+
+								<div id="tab_2" class="tab_container">
+
+									<!-- Comments -->
+									<div class="sidebar_comments">
+									{% if comments %}
+										{% for comment in comments %}
+											{% if forloop.counter < 6 %}
+											<!-- Comment -->
+											<div class="comment d-flex flex-row justify-content-start">
+												<div class="comment_icon">
+													<i class="far fa-comment"></i>
+												</div>
+												<div class="comment_content">
+													<p class="comment_text">{{comment.content}}</p>
+													<div class="comment_meta">
+														<span>by {{comment.account.user.first_name}}</span>
+														<span>{{comment.created|date}}</span>
+													</div>
+												</div>
+											</div>
+											{% endif %}
+										{% endfor %}
+									{% endif %}										
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+						<!-- Gallery -->
+
+						<div class="sidebar_section">
+							<div class="sidebar_gallery">
+								<div class="sidebar_title">gallery</div>
+
+								<ul class="gallery_items">
+
+									<!-- Gallery Item -->
+									<li class="gallery_item">
+										<a href="{% static 'images/gallery_1_large.jpg' %}">
+											<img src="{% static 'images/gallery_1.jpg' %}" alt="">
+										</a>
+									</li>
+
+                                    <!-- Gallery Item -->
+									<li class="gallery_item">
+										<a href="{% static 'images/gallery_2_large.jpg' %}">
+											<img src="{% static 'images/gallery_2.jpg' %}" alt="">
+										</a>
+									</li>
+
+                                    <!-- Gallery Item -->
+									<li class="gallery_item">
+										<a href="{% static 'images/gallery_3_large.jpg' %}">
+											<img src="{% static 'images/gallery_3.jpg' %}" alt="">
+										</a>
+									</li>
+
+                                    <!-- Gallery Item -->
+									<li class="gallery_item">
+										<a href="{% static 'images/gallery_4_large.jpg' %}">
+											<img src="{% static 'images/gallery_4.jpg' %}" alt="">
+										</a>
+									</li>
+
+                                    <!-- Gallery Item -->
+									<li class="gallery_item">
+										<a href="{% static 'images/gallery_5_large.jpg' %}">
+											<img src="{% static 'images/gallery_5.jpg' %}" alt="">
+										</a>
+									</li>
+
+                                    <li class="gallery_item">
+										<a href="{% static 'images/gallery_6_large.jpg' %}">
+											<img src="{% static 'images/gallery_6.jpg' %}" alt="">
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<!-- Quote -->
+
+						<div class="sidebar_section">
+							<div class="sidebar_quote">
+								<div class="sidebar_title">quote of the day</div>
+								<p>No self is of itself alone. It has a long chain of intellectual ancestors. The "I" is chained to ancestry by many factors… This is not mere allegory, but an eternal memory</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	{% endblock content %}
+
+	
+	<!-- Footer -->
+
+	<footer class="footer">
+		<div class="container">
+			<div class="row footer_content d-flex flex-sm-row flex-column align-items-center">
+				<div class="col-sm-6 cr text-sm-left text-center">
+					<p>
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | RaihanKabir</p>
+				</div>
+				<div class="col-sm-6 text-sm-right text-center">
+					<div class="footer_social_container">
+						<ul class="footer_social">
+							<li><a href="https://www.facebook.com/r.kabir2011/" target="_blank"><i class="fab fa-facebook-f trans_300"></i></a></li>
+							<li><a href="https://twitter.com/iamrk_" target="_blank"><i class="fab fa-twitter trans_300"></i></a></li>
+							<li><a href="https://github.com/iraihankabir" target="_blank"><i class="fab fa-github trans_300"></i></a></li>
+							<li><a href="https://www.youtube.com/channel/UCmPcUtSFNcN7n4Piv2HgtgA" target="_blank"><i class="fab fa-youtube trans_300"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+</div>
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/greensock/TweenMax.min.js' %}"></script>
+<script src="{% static 'plugins/greensock/TimelineMax.min.js' %}"></script>
+<script src="{% static 'plugins/scrollmagic/ScrollMagic.min.js' %}"></script>
+<script src="{% static 'plugins/greensock/animation.gsap.min.js' %}"></script>
+<script src="{% static 'plugins/greensock/ScrollToPlugin.min.js' %}"></script>
+<script src="{% static 'plugins/progressbar/progressbar.min.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/js-flickr-gallery-1.24/js-flickr-gallery.js' %}"></script>
+<script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'js/blog_custom.js' %}"></script>
+{% block js_files %}
+	<script type="text/javascript">
+		$(document).ready(function(){
+		    $('#content').keyup(function(){
+		    	if( $('#content').val().length > 2 ){
+		    		$('#postSubmit').attr('disabled', false);
+		    	}else{
+		    		$('#postSubmit').attr('disabled', true);
+		    	}
+		    });
+			// PHOTO OBJECT TRACKER
+		    function readURL(input, ID) {
+		        if (input.files && input.files[0]) {
+		            var reader = new FileReader();
+		            reader.onload = function (e) {
+		                $('#'+ID).parent('div').attr({"style": "background-image: url('"+e.target.result+"')"});
+		            }
+		            reader.readAsDataURL(input.files[0]);
+		        }
+		    }
+
+		    // IMAGE PREVIEW HANDLER
+		    function handleImage(ID, inputID){
+				if( $('#'+ID).parent('div').attr('style') == 'background: black' ){
+					$('#'+inputID).click();
+					$("#"+inputID).change(function(){
+				        readURL(this, ID);
+				    });
+					$('#'+ID).html('Remove');
+				}else{
+					$('#'+ID).parent('div').attr({'style': 'background: black'});
+					// MAKE EMPTY THE INPUT
+					$('#'+inputID).replaceWith($('#'+inputID).val('').clone(true));
+					$('#'+ID).html('+Add');
+				}
+		    } /* handleImage */
+
+		    // PREVIEW INPUT IMAGES
+			$('#photo1').click(function(){
+				handleImage('photo1', 'inPhoto1');
+			});
+			$('#photo2').click(function(){
+				handleImage('photo2', 'inPhoto2');
+			});
+			$('#photo3').click(function(){
+				handleImage('photo3', 'inPhoto3');
+			});
+		}); /* DOCUMENT READY */
+	</script>
+{% endblock js_files %}
+</body>
+
+</html>
