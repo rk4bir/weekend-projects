@@ -55,28 +55,28 @@ cd .\src\
 ## Screenshots
 
 ### Homepage
-![image](https://github.com/iraihankabir/friends/blob/master/screenshots/header.png)
+![image](./screenshots/header.png)
 
-![image](https://github.com/iraihankabir/friends/blob/master/screenshots/index%20page.png)
+![image](./screenshots/index%20page.png)
 
 
 ### Login - Registration
 
-![image](https://github.com/iraihankabir/friends/blob/master/screenshots/login.png)
+![image](./screenshots/login.png)
 
-![image](https://github.com/iraihankabir/friends/blob/master/screenshots/registration.png)
+![image](./screenshots/registration.png)
 
 ### Posts
 
-![image](https://github.com/iraihankabir/friends/blob/master/screenshots/blog.png)
+![image](./screenshots/blog.png)
 
-![image](https://github.com/iraihankabir/friends/blob/master/screenshots/posts.png)
+![image](./screenshots/posts.png)
 
-![image](https://github.com/iraihankabir/friends/blob/master/screenshots/post%20detail.png)
+![image](./screenshots/post%20detail.png)
 
 ### Profile
 
-![image](https://github.com/iraihankabir/friends/blob/master/screenshots/profile.png)
+![image](./screenshots/profile.png)
 
-![image](https://github.com/iraihankabir/friends/blob/master/screenshots/public%20profile.png)
+![image](./screenshots/public%20profile.png)
 
