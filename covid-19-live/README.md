@@ -5,7 +5,7 @@
 
 
 ## Logo
-![logo](/assets/images/web_hi_res_512.png)
+![logo](./assets/images/web_hi_res_512.png)
 
 
 ## Features
@@ -27,7 +27,7 @@
 ## Screenshots of V1.0.1
 | Global        | Country Page           |
 | ------------- |:-------------:|
-| ![global](/ss/global.jpg)      | ![country](/ss/country.jpg) |
+| ![global](./ss/global.jpg)      | ![country](./ss/country.jpg) |
 
 
 ## Privacy
